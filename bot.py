@@ -82,6 +82,16 @@ def list_craft_reset(update, context):
     update.message.reply_text('Craft buffer reseted.')
 
 
+def want_list(update, context):
+    
+    if update.message.reply_to_message:
+        text = update.message.reply_to_message.text
+    else:
+        text = update.message.text
+    #print(text.split('\n'))
+    util._create_want_list(text)
+
+
 def main():
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -99,8 +109,11 @@ def main():
     dp.add_handler(CommandHandler('craft_full', list_crafts_full))
     dp.add_handler(CommandHandler('craft_reset', list_craft_reset))
 
+    dp.add_handler(CommandHandler('want', want_list))
+
     dp.add_handler(MessageHandler(Filters.command, unknown_command))
 
+    print('Listening...')
     updater.start_polling()
     updater.idle()
 

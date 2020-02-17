@@ -2,6 +2,7 @@ import json
 import os
 import re
 
+import items
 
 def _save_items(file_name, data):
     with open(file_name, 'w') as f:
@@ -125,6 +126,28 @@ def list_possible_crafts(full=False):
         lines.append(line)
 
     return list(filter(lambda l: l[3] != '', lines)) if not full else lines
+
+
+def _create_want_list(text):
+
+    items._load_items()
+    
+    matches = re.findall('(\\d+)\\s+(\\d+|[A-Za-z ]+)', text)
+    if not matches:
+        print('Incorrect format')
+
+    print(items.get_item_by_name('Thread'))
+    print(items.get_item_by_name('HARDENER'))
+    print(items.get_item_by_name('Bone powder'))
+    print(items.get_item_by_name('Rubi'))
+    print(matches)
+    for amnt, code_name in matches:
+        m = re.match('\\d+', code_name)
+        if m: #is code
+            item = items.get_item_by_code(code_name)
+        else:
+            item = items.get_item_by_name(code_name)
+        print(amnt, item)
 
 
 if __name__ == '__main__':
